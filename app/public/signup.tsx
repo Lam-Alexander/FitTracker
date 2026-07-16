@@ -55,6 +55,7 @@ const Signup = () => {
           data: {
             display_name: name,
           },
+          emailRedirectTo: "fittracker://public/email-confirmed",
         },
       });
 
@@ -73,7 +74,7 @@ const Signup = () => {
         setPassword("");
         setConfirmPassword("");
 
-        router.push("./login");
+        router.push("/");
         return;
       }
     } catch (err) {
@@ -88,14 +89,14 @@ const Signup = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={{ flex: 1 }}>
             <View>
               <Text
@@ -103,7 +104,6 @@ const Signup = () => {
                   textAlign: "center",
                   fontSize: 28,
                   fontWeight: "bold",
-                  // marginTop: -25,
                 }}
               >
                 Fit<Text style={{ color: "#00dfc0" }}>Tracker.</Text>
@@ -123,7 +123,6 @@ const Signup = () => {
             <View style={{ marginTop: 30, marginBottom: -30, padding: 15 }}>
               <AuthCustomInput
                 label="Name"
-                // leftIcon={{ type: "font-awesome", name: "user", size: 30 }}
                 onChangeText={(text) => setName(text)}
                 value={name}
                 placeholder=" Name"
@@ -131,21 +130,12 @@ const Signup = () => {
 
               <AuthCustomInput
                 label="Email"
-                // leftIcon={{
-                //   type: "font-awesome",
-                //   name: "envelope",
-                // }}
                 onChangeText={(text) => setEmail(text)}
                 value={email}
                 placeholder=" Email@address.com"
               />
               <AuthCustomInput
                 label="Password"
-                // leftIcon={{
-                //   type: "font-awesome",
-                //   name: "lock",
-                //   size: 35,
-                // }}
                 onChangeText={(text) => setPassword(text)}
                 value={password}
                 placeholder=" Password"
@@ -154,11 +144,6 @@ const Signup = () => {
 
               <AuthCustomInput
                 label="Confirm Password"
-                // leftIcon={{
-                //   type: "font-awesome",
-                //   name: "lock",
-                //   size: 35,
-                // }}
                 onChangeText={(text) => setConfirmPassword(text)}
                 value={confirmPassword}
                 placeholder=" Confirm Password"
@@ -207,9 +192,9 @@ const Signup = () => {
               </View>
             </View>
           </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-        </SafeAreaView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

@@ -27,7 +27,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>workouttrackerapp</string>
+				<string>fittracker</string>
 				<string>com.captain-alex.WorkoutTrackerApp</string>
 			</array>
 		</dict>
