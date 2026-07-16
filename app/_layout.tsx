@@ -14,7 +14,6 @@ export default function Root_Layout() {
           options={{
             title: "",
             headerTintColor: "#2AD4B2",
-            headerShown: false
           }}
         />
         <Stack.Screen name="private" options={{ headerShown: false }} />
