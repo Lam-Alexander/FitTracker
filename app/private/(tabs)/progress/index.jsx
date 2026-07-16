@@ -39,7 +39,11 @@ const getStartOfDay = (date) =>
  */
 const getStartOfWeek = (date) => {
   const dayOfWeek = date.getDay(); // 0 = Sunday
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate() - dayOfWeek);
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate() - dayOfWeek,
+  );
 };
 
 /** Returns a new Date set to Saturday of the same week at 23:59:59.999 */
@@ -50,7 +54,10 @@ const getEndOfWeek = (date) => {
     date.getFullYear(),
     date.getMonth(),
     date.getDate() + daysUntilSaturday,
-    23, 59, 59, 999
+    23,
+    59,
+    59,
+    999,
   );
 };
 
@@ -63,8 +70,7 @@ const getEndOfMonth = (date) =>
   new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
 
 /** Formats a date using toLocaleDateString with the given options */
-const formatDate = (date, options) =>
-  date.toLocaleDateString("en-US", options);
+const formatDate = (date, options) => date.toLocaleDateString("en-US", options);
 
 /** Returns true if two dates fall on the same calendar day */
 const isSameDay = (dateA, dateB) =>
@@ -96,15 +102,20 @@ const DAY_NAMES = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
  *   Week  → highlights the full Sun–Sat row containing the selected day
  *   Month → highlights every day in the selected month
  */
-const CalendarPicker = ({ activeFilter, anchorDate, onSelectDate, onClose }) => {
+const CalendarPicker = ({
+  activeFilter,
+  anchorDate,
+  onSelectDate,
+  onClose,
+}) => {
   // The calendar always shows one month; start browsing from the anchor's month
   const [calendarViewDate, setCalendarViewDate] = useState(
-    new Date(anchorDate.getFullYear(), anchorDate.getMonth(), 1)
+    new Date(anchorDate.getFullYear(), anchorDate.getMonth(), 1),
   );
 
   const shiftCalendarMonth = (direction) => {
     setCalendarViewDate(
-      (prev) => new Date(prev.getFullYear(), prev.getMonth() + direction, 1)
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() + direction, 1),
     );
   };
 
@@ -139,23 +150,35 @@ const CalendarPicker = ({ activeFilter, anchorDate, onSelectDate, onClose }) => 
   /** Returns whether a cell is at the start edge of the highlighted range */
   const isHighlightStart = (cellDate) => {
     if (!cellDate || activeFilter === "Day") return false;
-    if (activeFilter === "Week") return cellDate.getDay() === 0 && isSameWeek(cellDate, anchorDate);
-    if (activeFilter === "Month") return cellDate.getDate() === 1 && isSameMonth(cellDate, anchorDate);
+    if (activeFilter === "Week")
+      return cellDate.getDay() === 0 && isSameWeek(cellDate, anchorDate);
+    if (activeFilter === "Month")
+      return cellDate.getDate() === 1 && isSameMonth(cellDate, anchorDate);
     return false;
   };
 
   /** Returns whether a cell is at the end edge of the highlighted range */
   const isHighlightEnd = (cellDate) => {
     if (!cellDate || activeFilter === "Day") return false;
-    if (activeFilter === "Week") return cellDate.getDay() === 6 && isSameWeek(cellDate, anchorDate);
+    if (activeFilter === "Week")
+      return cellDate.getDay() === 6 && isSameWeek(cellDate, anchorDate);
     if (activeFilter === "Month") {
-      const lastDay = new Date(cellDate.getFullYear(), cellDate.getMonth() + 1, 0).getDate();
-      return cellDate.getDate() === lastDay && isSameMonth(cellDate, anchorDate);
+      const lastDay = new Date(
+        cellDate.getFullYear(),
+        cellDate.getMonth() + 1,
+        0,
+      ).getDate();
+      return (
+        cellDate.getDate() === lastDay && isSameMonth(cellDate, anchorDate)
+      );
     }
     return false;
   };
 
-  const monthYearLabel = formatDate(calendarViewDate, { month: "long", year: "numeric" });
+  const monthYearLabel = formatDate(calendarViewDate, {
+    month: "long",
+    year: "numeric",
+  });
   const today = new Date();
 
   return (
@@ -216,7 +239,9 @@ const CalendarPicker = ({ activeFilter, anchorDate, onSelectDate, onClose }) => 
                 style={[
                   calendarStyles.dayNumber,
                   // Single-day circle highlight
-                  highlighted && activeFilter === "Day" && calendarStyles.dayNumberSelected,
+                  highlighted &&
+                    activeFilter === "Day" &&
+                    calendarStyles.dayNumberSelected,
                   // Cap dots for range start/end
                   (isStart || isEnd) && calendarStyles.dayNumberRangeCap,
                 ]}
@@ -224,9 +249,16 @@ const CalendarPicker = ({ activeFilter, anchorDate, onSelectDate, onClose }) => 
                 <Text
                   style={[
                     calendarStyles.dayNumberText,
-                    (highlighted && activeFilter === "Day" || isStart || isEnd) && calendarStyles.dayNumberTextHighlighted,
-                    isToday && !highlighted && calendarStyles.dayNumberTextToday,
-                    isToday && isMiddleOfRange && calendarStyles.dayNumberTextToday,
+                    ((highlighted && activeFilter === "Day") ||
+                      isStart ||
+                      isEnd) &&
+                      calendarStyles.dayNumberTextHighlighted,
+                    isToday &&
+                      !highlighted &&
+                      calendarStyles.dayNumberTextToday,
+                    isToday &&
+                      isMiddleOfRange &&
+                      calendarStyles.dayNumberTextToday,
                   ]}
                 >
                   {cellDate ? cellDate.getDate() : ""}
@@ -283,8 +315,15 @@ const ProgressPage = () => {
         day: "numeric",
       });
     if (activeFilter === "Week") {
-      const startLabel = formatDate(dateRange.start, { month: "short", day: "numeric" });
-      const endLabel = formatDate(dateRange.end, { month: "short", day: "numeric", year: "numeric" });
+      const startLabel = formatDate(dateRange.start, {
+        month: "short",
+        day: "numeric",
+      });
+      const endLabel = formatDate(dateRange.end, {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
       return `${startLabel} – ${endLabel}`;
     }
     return formatDate(dateRange.start, { month: "long", year: "numeric" });
@@ -294,8 +333,10 @@ const ProgressPage = () => {
 
   const shiftPeriod = (direction) => {
     const nextDate = new Date(anchorDate);
-    if (activeFilter === "Day") nextDate.setDate(nextDate.getDate() + direction);
-    else if (activeFilter === "Week") nextDate.setDate(nextDate.getDate() + direction * 7);
+    if (activeFilter === "Day")
+      nextDate.setDate(nextDate.getDate() + direction);
+    else if (activeFilter === "Week")
+      nextDate.setDate(nextDate.getDate() + direction * 7);
     else nextDate.setMonth(nextDate.getMonth() + direction);
     setAnchorDate(nextDate);
   };
@@ -312,8 +353,13 @@ const ProgressPage = () => {
   const fetchWorkoutLogs = useCallback(async () => {
     setIsLoading(true);
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setIsLoading(false); return; }
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setIsLoading(false);
+      return;
+    }
 
     // Use local date string (not toISOString) to prevent UTC conversion
     // from shifting the date backward for timezones west of UTC
@@ -336,7 +382,7 @@ const ProgressPage = () => {
              weights,
              set_order_idx
            )
-         )`
+         )`,
       )
       .eq("profile_id", user.id)
       .gte("workout_date", startDateIso)
@@ -353,7 +399,7 @@ const ProgressPage = () => {
         exercise_log: (workoutLog.exercise_log ?? []).map((exerciseLog) => ({
           ...exerciseLog,
           sets: [...(exerciseLog.sets ?? [])].sort(
-            (setA, setB) => setA.set_order_idx - setB.set_order_idx
+            (setA, setB) => setA.set_order_idx - setB.set_order_idx,
           ),
         })),
       }));
@@ -363,9 +409,15 @@ const ProgressPage = () => {
     setIsLoading(false);
   }, [activeFilter, anchorDate]);
 
-  useEffect(() => { fetchWorkoutLogs(); }, [fetchWorkoutLogs]);
+  useEffect(() => {
+    fetchWorkoutLogs();
+  }, [fetchWorkoutLogs]);
 
-  useFocusEffect(useCallback(() => { fetchWorkoutLogs(); }, [fetchWorkoutLogs]));
+  useFocusEffect(
+    useCallback(() => {
+      fetchWorkoutLogs();
+    }, [fetchWorkoutLogs]),
+  );
 
   // ── summary stats ─────────────────────────────────────────────────────────
 
@@ -375,10 +427,11 @@ const ProgressPage = () => {
     (sessionTotal, workoutLog) =>
       sessionTotal +
       (workoutLog.exercise_log ?? []).reduce(
-        (exerciseTotal, exerciseLog) => exerciseTotal + (exerciseLog.sets ?? []).length,
-        0
+        (exerciseTotal, exerciseLog) =>
+          exerciseTotal + (exerciseLog.sets ?? []).length,
+        0,
       ),
-    0
+    0,
   );
 
   // ── render helpers ────────────────────────────────────────────────────────
@@ -387,7 +440,11 @@ const ProgressPage = () => {
   const formatWorkoutDateLabel = (dateString) => {
     // Append T00:00:00 to avoid UTC-offset shifting the date
     const date = new Date(dateString + "T00:00:00");
-    return formatDate(date, { weekday: "long", month: "short", day: "numeric" });
+    return formatDate(date, {
+      weekday: "long",
+      month: "short",
+      day: "numeric",
+    });
   };
 
   // ── render ────────────────────────────────────────────────────────────────
@@ -395,7 +452,6 @@ const ProgressPage = () => {
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-
         {/* ── header ── */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>
@@ -409,14 +465,22 @@ const ProgressPage = () => {
           {["Day", "Week", "Month"].map((tabLabel) => (
             <TouchableOpacity
               key={tabLabel}
-              style={[styles.filterTab, activeFilter === tabLabel && styles.filterTabActive]}
+              style={[
+                styles.filterTab,
+                activeFilter === tabLabel && styles.filterTabActive,
+              ]}
               onPress={() => {
                 setActiveFilter(tabLabel);
                 setAnchorDate(new Date());
                 setIsCalendarVisible(false);
               }}
             >
-              <Text style={[styles.filterTabText, activeFilter === tabLabel && styles.filterTabTextActive]}>
+              <Text
+                style={[
+                  styles.filterTabText,
+                  activeFilter === tabLabel && styles.filterTabTextActive,
+                ]}
+              >
                 {tabLabel}
               </Text>
             </TouchableOpacity>
@@ -425,7 +489,10 @@ const ProgressPage = () => {
 
         {/* ── period navigator ── */}
         <View style={styles.rangeRow}>
-          <TouchableOpacity onPress={() => shiftPeriod(-1)} style={styles.chevronBtn}>
+          <TouchableOpacity
+            onPress={() => shiftPeriod(-1)}
+            style={styles.chevronBtn}
+          >
             <ChevronLeft size={20} color="#64748B" />
           </TouchableOpacity>
 
@@ -438,7 +505,10 @@ const ProgressPage = () => {
             <Text style={styles.rangeLabel}>{dateRangeLabel}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => shiftPeriod(1)} style={styles.chevronBtn}>
+          <TouchableOpacity
+            onPress={() => shiftPeriod(1)}
+            style={styles.chevronBtn}
+          >
             <ChevronRight size={20} color="#64748B" />
           </TouchableOpacity>
         </View>
@@ -473,12 +543,13 @@ const ProgressPage = () => {
           </View>
         ) : workoutLogs.length === 0 ? (
           <View style={styles.centered}>
-            <Text style={styles.emptyText}>No workouts logged for this period.</Text>
+            <Text style={styles.emptyText}>
+              No workouts logged for this period.
+            </Text>
           </View>
         ) : (
           workoutLogs.map((workoutLog) => (
             <View key={workoutLog.id} style={styles.workoutBlock}>
-
               {/* workout header */}
               <View style={styles.workoutHeaderRow}>
                 <View>
@@ -501,25 +572,38 @@ const ProgressPage = () => {
               {/* exercises */}
               {(workoutLog.exercise_log ?? []).map((exerciseLog) => (
                 <View key={exerciseLog.id} style={styles.exerciseBlock}>
-                  <Text style={styles.exerciseName}>{exerciseLog.exercise_name}</Text>
+                  <Text style={styles.exerciseName}>
+                    {exerciseLog.exercise_name}
+                  </Text>
 
                   {/* table header */}
                   <View style={[styles.tableRow, styles.tableHeaderRow]}>
                     <Text style={[styles.colSet, styles.headerCell]}>Set</Text>
-                    <Text style={[styles.colReps, styles.headerCell]}>Reps</Text>
-                    <Text style={[styles.colWeight, styles.headerCell]}>Weight</Text>
+                    <Text style={[styles.colReps, styles.headerCell]}>
+                      Reps
+                    </Text>
+                    <Text style={[styles.colWeight, styles.headerCell]}>
+                      Weight
+                    </Text>
                   </View>
 
                   {(exerciseLog.sets ?? []).map((set, setIndex) => (
                     <View
                       key={set.id}
-                      style={[styles.tableRow, setIndex % 2 === 0 ? styles.rowEven : null]}
+                      style={[
+                        styles.tableRow,
+                        setIndex % 2 === 0 ? styles.rowEven : null,
+                      ]}
                     >
                       <Text style={[styles.colSet, styles.rowCell]}>
                         {set.set_number ?? setIndex + 1}
                       </Text>
-                      <Text style={[styles.colReps, styles.rowCellBold]}>{set.reps}</Text>
-                      <Text style={[styles.colWeight, styles.rowCellAccent]}>{set.weights}</Text>
+                      <Text style={[styles.colReps, styles.rowCellBold]}>
+                        {set.reps}
+                      </Text>
+                      <Text style={[styles.colWeight, styles.rowCellAccent]}>
+                        {set.weights}
+                      </Text>
                     </View>
                   ))}
                 </View>

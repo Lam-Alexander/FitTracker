@@ -33,10 +33,24 @@ type SettingsRowProps = {
 
 // ─── reusable row component ───────────────────────────────────────────────────
 
-const SettingsRow = ({ icon, label, onPress, isDestructive = false }: SettingsRowProps) => (
-  <TouchableOpacity style={settingsRowStyles.row} onPress={onPress} activeOpacity={0.7}>
+const SettingsRow = ({
+  icon,
+  label,
+  onPress,
+  isDestructive = false,
+}: SettingsRowProps) => (
+  <TouchableOpacity
+    style={settingsRowStyles.row}
+    onPress={onPress}
+    activeOpacity={0.7}
+  >
     <View style={settingsRowStyles.iconWrapper}>{icon}</View>
-    <Text style={[settingsRowStyles.label, isDestructive && settingsRowStyles.labelDestructive]}>
+    <Text
+      style={[
+        settingsRowStyles.label,
+        isDestructive && settingsRowStyles.labelDestructive,
+      ]}
+    >
       {label}
     </Text>
     <ChevronRight size={16} color={isDestructive ? "#EF4444" : "#CBD5E1"} />
@@ -45,7 +59,13 @@ const SettingsRow = ({ icon, label, onPress, isDestructive = false }: SettingsRo
 
 // ─── section wrapper ──────────────────────────────────────────────────────────
 
-const SettingsSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const SettingsSection = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
   <View style={sectionStyles.container}>
     <Text style={sectionStyles.title}>{title}</Text>
     <View style={sectionStyles.card}>{children}</View>
@@ -54,7 +74,9 @@ const SettingsSection = ({ title, children }: { title: string; children: React.R
 
 // ─── divider ─────────────────────────────────────────────────────────────────
 
-const RowDivider = () => <View style={{ height: 1, backgroundColor: "#F1F5F9", marginLeft: 52 }} />;
+const RowDivider = () => (
+  <View style={{ height: 1, backgroundColor: "#F1F5F9", marginLeft: 52 }} />
+);
 
 // ─── main settings page ───────────────────────────────────────────────────────
 
@@ -76,7 +98,9 @@ const Settings = () => {
           // Clear session for devices affected by multi-device login issues
           await (supabase.auth as any)._removeSession();
 
-          const { data: { session } } = await supabase.auth.getSession();
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
           console.log("Session after signout:", session);
           console.log("Signed out successfully");
 
@@ -93,13 +117,14 @@ const Settings = () => {
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-
         {/* ── header ── */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>
             My <Text style={styles.headerAccent}>Settings</Text>
           </Text>
-          <Text style={styles.headerSub}>Manage your account & preferences</Text>
+          <Text style={styles.headerSub}>
+            Manage your account & preferences
+          </Text>
         </View>
 
         {/* ── profile card ── */}
@@ -304,4 +329,3 @@ const settingsRowStyles = StyleSheet.create({
     color: "#EF4444",
   },
 });
-
